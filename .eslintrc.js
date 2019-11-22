@@ -21,7 +21,6 @@ module.exports = {
         'func-names': 'off'
     },
     env: {
-        mongo: true,
         node: true,
         browser: true,
         mocha: true
@@ -31,10 +30,10 @@ module.exports = {
             node: {
                 paths: ['.']
             },
-            alias: {
-                map: [['/src', './src']],
-                extensions: ['.ts', '.js', '.jsx', '.json']
-            }
+            // alias: {
+            //     map: [['/src', './src']],
+            //     extensions: ['.ts', '.js', '.jsx', '.json']
+            // }
         }
     }
 };
