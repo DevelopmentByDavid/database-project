@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon  --exec babel-node ./bin/www.js"
+    "start": "nodemon  --exec babel-node ./bin/www.js",
+    "startdb": "./db/startdb.sh /tmp/db-project",
+    "resetdb": "./db/resetdb.sh /tmp/db-project",
+    "stopdb": "./db/stopdb.sh /tmp/db-project"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
