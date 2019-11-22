@@ -6,7 +6,7 @@
     "start": "nodemon  --exec babel-node ./bin/www.js",
     "startdb": "./db/startdb.sh /tmp/better-banner",
     "resetdb": "./db/resetdb.sh /tmp/better-banner",
-    "stopdb": "./db/stopdb.sh /tmp/better-banner",
+    "stopdb": "./db/stopdb.sh /tmp/better-banner"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
