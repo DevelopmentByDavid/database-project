@@ -1,4 +1,4 @@
-#CS 166 Database Phase 3
+# CS 166 Database Phase 3
 This app simulates a Hotel database system in which customers, hotel staff, and
 maintenance staff can access the necessary information.
 
