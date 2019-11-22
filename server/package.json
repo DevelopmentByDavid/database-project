@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "start": "nodemon  --exec babel-node ./bin/www.js",
-    "startdb": "./db/startdb.sh /tmp/better-banner",
-    "resetdb": "./db/resetdb.sh /tmp/better-banner",
-    "stopdb": "./db/stopdb.sh /tmp/better-banner"
+    "startdb": "./db/startdb.sh /tmp/db-project",
+    "resetdb": "./db/resetdb.sh /tmp/db-project",
+    "stopdb": "./db/stopdb.sh /tmp/db-project"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
