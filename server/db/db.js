@@ -17,10 +17,10 @@ dotenv.config();
 
 const client = new Client({
     // user: process.env.PGUSER,
-    host: 'localhost',
-    database: 'OnlyLinux_DB',
+    host: process.env.PGHOST,
+    database: process.env.PGDATABASE,
     // password: process.env.PGPASSWORD,
-    port: 8192
+    port: process.env.PGPORT
 });
 
 client.connect();

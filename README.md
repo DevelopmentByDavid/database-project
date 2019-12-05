@@ -1,9 +1,10 @@
 # How to Run
 ## 1. Setup DB
 ```bash
+cd server
+cp .env.example .env # you must then edit the .env file
 source ./db/startPostgreSQL.sh
 ./db/createPostGreDB.sh
-cd server
 yarn seed
 ```
 # CS 166 Database Phase 3
