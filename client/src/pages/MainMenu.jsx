@@ -54,7 +54,7 @@ export default function MainMenu() {
         history.push(`/search/${id}`)
     };
     return (
-        <Container maxWidth='md'>
+        <Container maxWidth='md' style={{ paddingtop: '16px'}}>
             <Typography variant='h4'>Menu</Typography>
             <Paper>
                 <Menu data={menu} onClick={handleClick} />

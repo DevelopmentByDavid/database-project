@@ -7,15 +7,15 @@ import Results from '../components/Results';
 
 export default function Search() {
     return (
-        <Container maxWidth='md'>
-            <Grid container spacing={3}>
+        <Container maxWidth='md' style={{ paddingTop: '16px'}}>
+            <Grid container spacing={3} justify='center'>
                 <Grid item xs={12}>
                     <Paper style={{ padding: '16px' }}>
                         <SearchForm placeholder='test' onSubmit={() => console.log('submitted search')} />
                     </Paper>
                 </Grid>
                 <Grid item xs={12}>
-                    <Results data={[]} />
+                    <Results data={[]} onClick={id => console.log(id)}/>
                 </Grid>
             </Grid>
         </Container>

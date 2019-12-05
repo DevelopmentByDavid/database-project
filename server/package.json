@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "start": "nodemon  --exec babel-node ./bin/www.js",
-    "startdb": "./db/startdb.sh /tmp/db-project",
-    "resetdb": "./db/resetdb.sh /tmp/db-project",
-    "stopdb": "./db/stopdb.sh /tmp/db-project"
+    "startdb": "source ./db/startPostgreSQL.sh && source ./db/createPostgreDB.sh",
+    "stopdb": "source ./db/stopPostgreDB.sh",
+    "seed": "cp -R ./db/data/* /tmp/OnlyLinux/myDB/data && psql -h localhost -p $PGPORT $USER\"_DB\" < ./db/create.sql"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -15,7 +15,8 @@
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
-    "nodemon": "^1.19.1"
+    "nodemon": "^1.19.1",
+    "pg": "^7.14.0"
   },
   "devDependencies": {
     "@babel/core": "^7.7.2",
