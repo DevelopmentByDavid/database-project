@@ -1,3 +1,11 @@
+# How to Run
+## 1. Setup DB
+```bash
+source ./db/startPostgreSQL.sh
+./db/createPostGreDB.sh
+cd server
+yarn seed
+```
 # CS 166 Database Phase 3
 This app simulates a Hotel database system in which customers, hotel staff, and
 maintenance staff can access the necessary information.
