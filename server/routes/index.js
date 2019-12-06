@@ -147,7 +147,6 @@ router.get('/read/:searchId', (req, res) => {
             break;
         }
         case 12: {
-            // TODO: fix
             // Get customer total cost occurred for a give date range
             const { customerID, searchStartDate, searchEndDate } = req.query;
             db.query(
