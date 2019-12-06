@@ -46,7 +46,7 @@ export default function FormBooking() {
     };
     return (
         <Paper style={{ padding: '16px' }}>
-            <Typography variant='h4'>Add a Customer</Typography>
+            <Typography variant='h4'>Add a Booking</Typography>
             <form id='new-customer' onSubmit={handleSubmit}>
                 <Grid container spacing={2}>
                     {fields.map((fieldName, idx) => (

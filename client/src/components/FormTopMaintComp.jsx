@@ -26,7 +26,7 @@ export default function FormBooking() {
     };
     return (
         <Paper style={{ padding: '16px' }}>
-            <Typography variant='h4'>Output Limit</Typography>
+            <Typography variant='h4'>Top Repairs Made By Maintenance Companies</Typography>
             <form id='new-customer' onSubmit={handleSubmit}>
                 <Grid container spacing={2}>
                     {fields.map((fieldName, idx) => (

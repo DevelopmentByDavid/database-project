@@ -5,22 +5,24 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 
-const fields = ['customerID'];
-const labels = ['Customer ID'];
+const fields = ['customerID', 'searchStartDate', 'searchEndDate'];
+const labels = ['Customer ID', 'Start Date', 'End Date'];
 
 export default function FormCompany() {
     const handleSubmit = event => {
         event.preventDefault();
-        const { customerID } = event.target;
+        const { customerID, searchStartDate, searchEndDate } = event.target;
         const values = {
-            customerID: customerID.value
+            customerID: customerID.value,
+            searchStartDate: searchStartDate.value,
+            searchEndDate: searchEndDate.value
         };
         console.log(values);
         console.log('TODO');
     };
     return (
         <Paper style={{ padding: '16px' }}>
-            <Typography variant='h4'>Add a Customer</Typography>
+            <Typography variant='h4'>Total Cost Incurred For Customer</Typography>
             <form id='new-customer' onSubmit={handleSubmit}>
                 <Grid container spacing={2}>
                     {fields.map((fieldName, idx) => (

@@ -30,7 +30,7 @@ export default function FormRepairsPerYear() {
     };
     return (
         <Paper style={{ padding: '16px' }}>
-            <Typography variant='h4'>Repairs Per Year</Typography>
+            <Typography variant='h4'>Top Booking Prices</Typography>
             <form id='new-customer' onSubmit={handleSubmit}>
                 <Grid container spacing={2}>
                     {fields.map((fieldName, idx) => (

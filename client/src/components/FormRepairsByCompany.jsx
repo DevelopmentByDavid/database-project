@@ -20,7 +20,7 @@ export default function FormCompany() {
     };
     return (
         <Paper style={{ padding: '16px' }}>
-            <Typography variant='h4'>Repairs By Maint Company</Typography>
+            <Typography variant='h4'>Repairs By Maintenance Company</Typography>
             <form id='new-customer' onSubmit={handleSubmit}>
                 <Grid container spacing={2}>
                     {fields.map((fieldName, idx) => (

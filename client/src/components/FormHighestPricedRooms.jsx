@@ -23,7 +23,7 @@ export default function FormHighestPricedRooms() {
     };
     return (
         <Paper style={{ padding: '16px' }}>
-            <Typography variant='h4'>Number of Bookings</Typography>
+            <Typography variant='h4'>Highest Priced Rooms</Typography>
             <form id='new-customer' onSubmit={handleSubmit}>
                 <Grid container spacing={2}>
                     {fields.map((fieldName, idx) => (
