@@ -16,7 +16,7 @@ mkdir $folder/myDB/sockets
 sleep 1
 
 #Initialize DB
-initdb
+initdb -D $PGDATA
 
 sleep 1
 #Start folder
