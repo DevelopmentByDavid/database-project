@@ -7,7 +7,7 @@
     "license": "UNLICENSED",
     "scripts": {
         "client": "cd client && npm start",
-        "server": "cd server && npm start",
+        "server": "cd server && npm run startdb && npm run seed && npm start",
         "start": "concurrently -- kill-others \"npm run server --scripts-prepend-node-path\" \"npm run client --scripts-prepend-node-path\""
     },
     "dependencies": {},

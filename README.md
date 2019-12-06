@@ -1,12 +1,5 @@
 # How to Run
-## 1. Setup DB
-```bash
-cd server
-cp .env.example .env # you must then edit the .env file
-source ./db/startPostgreSQL.sh
-./db/createPostGreDB.sh
-yarn seed
-```
+`yarn start` in the root directory
 # CS 166 Database Phase 3
 This app simulates a Hotel database system in which customers, hotel staff, and
 maintenance staff can access the necessary information.

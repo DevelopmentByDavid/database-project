@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "start": "nodemon  --exec babel-node ./bin/www.js",
-    "startdb": "source ./db/startPostgreSQL.sh && source ./db/createPostgreDB.sh",
-    "stopdb": "source ./db/stopPostgreDB.sh",
-    "seed": "cp -R ./db/data/* /tmp/OnlyLinux/myDB/data && psql -h localhost -p $PGPORT $USER\"_DB\" < ./db/create.sql"
+    "startdb": "./db/startPostgreSQL.sh && ./db/createPostgreDB.sh",
+    "stopdb": "./db/stopPostgreDB.sh",
+    "seed": "cp -R ./db/data/* /tmp/project/myDB/data && psql -h localhost -p $PGPORT \"project_DB\" < ./db/create.sql"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
