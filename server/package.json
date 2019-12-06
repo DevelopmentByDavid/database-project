@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "nodemon  --exec babel-node ./bin/www.js",
-    "startdb": "./db/startPostgreSQL.sh && ./db/createPostgreDB.sh",
+    "startdb": "./db/startPostgreSQL.sh",
     "stopdb": "./db/stopPostgreDB.sh",
     "seed": "cp -R ./db/data/* /tmp/project/myDB/data && psql -h localhost -p $PGPORT \"project_DB\" < ./db/create.sql"
   },
