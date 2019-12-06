@@ -1,7 +1,7 @@
 #! /bin/bash
-folder=/tmp/project
-PGDATA=$folder/myDB/data
-PGSOCKETS=$folder/myDB/sockets
+export folder=/tmp/project
+export PGDATA=$folder/myDB/data
+export PGSOCKETS=$folder/myDB/sockets
 
 echo $folder
 
@@ -22,4 +22,9 @@ sleep 1
 #Start folder
 export PGPORT=8192
 pg_ctl -o "-c unix_socket_directories=/tmp/project/myDB/sockets -p 8192" -D /tmp/project/myDB/data -l /tmp/project/logfile start
+
+echo "creating db named ... project_DB"
+createdb -h localhost -p 8192 "project_DB"
+pg_ctl status
+
 
