@@ -7,7 +7,6 @@ const router = express.Router();
 /* GET home page. */
 router.get('/read/:searchId', (req, res) => {
     const { searchId } = req.params;
-    const queryParams = req.query;
     switch (parseInt(searchId, 10)) {
         case 7: {
             // Get number of rooms available
@@ -18,16 +17,16 @@ router.get('/read/:searchId', (req, res) => {
                     FROM (
                         SELECT R.roomNo
                         FROM Hotel H, Room R
-                        WHERE H.hotelID = ${hotelID}
+                        WHERE H.hotelID = '${hotelID}'
                                   AND H.hotelID = R.hotelID
                         EXCEPT
                         SELECT R_in.roomNo
                         FROM Hotel H_in, Room R_in, Booking B_in
-                        WHERE H_in.hotelID = ${hotelID}
+                        WHERE H_in.hotelID = '${hotelID}'
                                   AND H_in.hotelID = B_in.hotelID
                                   AND H_in.hotelID = R_in.hotelID
                                   AND B_in.roomNo = R_in.roomNo
-                                  AND B_in.bookingDate = ${bookingDate}::DATE
+                                  AND B_in.bookingDate = '${bookingDate}'::DATE
                      ) AS available`
             )
                 .then(queryRes => {
@@ -157,7 +156,6 @@ router.get('/read/:searchId', (req, res) => {
                             AND B.customer = C.customerID
                             AND B.bookingDate >= ${searchStartDate}::DATE
                             AND B.bookingDate <= ${searchEndDate}::DATE`
-
             )
                 .then(queryRes => {
                     // Assuming we're sending the result
@@ -194,11 +192,11 @@ router.get('/read/:searchId', (req, res) => {
             const { outputLimit } = req.query;
             db.query(
                 `
-                    SELECT M.cmpID, M.name, COUNT(*) as "Number of Repairs"
+                    SELECT M.cmpID, M.name, COUNT(*) as \'Number of Repairs\'
                     FROM Repair R, MaintenanceCompany M
                     WHERE M.cmpID = R.mCompany
                     GROUP BY M.cmpID
-                    ORDER BY "Number of Repairs" DESC
+                    ORDER BY \'Number of Repairs\' DESC
                     LIMIT ${outputLimit}`
             )
                 .then(queryRes => {
@@ -217,11 +215,11 @@ router.get('/read/:searchId', (req, res) => {
             const { hotelID, roomNo } = req.query;
             db.query(
                 `
-                    SELECT EXTRACT(YEAR FROM R.repairDate) AS "Year", COUNT(*) AS "Total Repairs"
+                    SELECT EXTRACT(YEAR FROM R.repairDate) AS \'Year\', COUNT(*) AS \'Total Repairs\'
                     FROM Repair R
                     WHERE R.hotelID = ${hotelID}
                             AND R.roomNo = ${roomNo}
-                    GROUP BY "Year"`
+                    GROUP BY \'Year\'`
             )
                 .then(queryRes => {
                     // Assuming we're sending the result
@@ -243,16 +241,19 @@ router.get('/read/:searchId', (req, res) => {
 router.post('/create/:insertId', (req, res) => {
     const { insertId } = req.params;
     const data = req.body;
-    switch (insertId) {
+    switch (parseInt(insertId, 10)) {
         case 0: {
             const { fName, lName, Address, phNo, DOB, gender } = data;
             db.query(
-                `INSERT INTO customer(fName, lName,\
+                `INSERT INTO customer(customerID, fName, lName,\
                  Address, phNo, DOB, gender) VALUES\
-                  (${fName}, ${lName}, ${Address}, ${phNo}, ${DOB}, ${gender})`
+                  (${2000 +
+                      Math.floor(
+                          Math.random() * 1000000000000
+                      )},'${fName}', '${lName}', '${Address}', '${phNo}'::NUMERIC, '${DOB}'::DATE, '${gender}')`
             )
                 .then(queryRes => {
-                    res.json(queryRes.rows);
+                    res.json({ data:queryRes.rowCount });
                 })
                 .catch(err => {
                     console.log(err);
