@@ -1,35 +1,23 @@
 import React from 'react';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import { useParams } from 'react-router-dom';
-import SearchForm from '../components/SearchForm';
-import Results from '../components/Results';
+import FormRoomsAvailable from '../components/FormRoomsAvailable';
+import FormRoomsBooked from '../components/FormRoomsBooked';
+import FormBookingsForWeek from '../components/FormBookingsForWeek';
+import FormHighestPricedRooms from '../components/FormHighestPricedRooms';
 
-export default function Read() {
+const config = {
+    '7': <FormRoomsAvailable />,
+    '8': <FormRoomsBooked />,
+    '9': <FormBookingsForWeek />,
+    '10': <FormHighestPricedRooms />
+};
+
+export default function Create() {
     const { id } = useParams();
-    const handleSearch = e => {
-        e.preventDefault();
-        console.log(id);
-    };
     return (
         <Container maxWidth='md' style={{ paddingTop: '16px' }}>
-            <Grid container spacing={3} justify='center'>
-                <Grid item xs={12}>
-                    <Paper style={{ padding: '16px' }}>
-                        <SearchForm
-                            placeholder='test'
-                            onSubmit={handleSearch}
-                        />
-                    </Paper>
-                </Grid>
-                <Grid item xs={12}>
-                    <Results
-                        data={[]}
-                        onClick={resultId => console.log(resultId)}
-                    />
-                </Grid>
-            </Grid>
+            {config[id]}
         </Container>
     );
 }
