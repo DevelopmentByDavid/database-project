@@ -16,16 +16,16 @@ router.get('/read/:searchId', (req, res) => {
                     FROM (
                         SELECT R.roomNo
                         FROM Hotel H, Room R
-                        WHERE H.hotelID = '${hotelID}'
+                        WHERE H.hotelID = ${hotelID}
                                   AND H.hotelID = R.hotelID
                         EXCEPT
                         SELECT R_in.roomNo
                         FROM Hotel H_in, Room R_in, Booking B_in
-                        WHERE H_in.hotelID = '${hotelID}'
+                        WHERE H_in.hotelID = ${hotelID}
                                   AND H_in.hotelID = B_in.hotelID
                                   AND H_in.hotelID = R_in.hotelID
                                   AND B_in.roomNo = R_in.roomNo
-                                  AND B_in.bookingDate = '${bookingDate}'::DATE
+                                  AND B_in.bookingDate = ${bookingDate}::DATE
                      ) AS available`
             )
                 .then(queryRes => {
@@ -40,7 +40,7 @@ router.get('/read/:searchId', (req, res) => {
         }
         case 8: {
             // Get number of booked rooms
-            const { hotelID, bookingDate } = req.body;
+            const { hotelID, bookingDate } = req.query;
             db.query(`
                     SELECT COUNT(*) AS "booked"
                     FROM (
@@ -51,7 +51,7 @@ router.get('/read/:searchId', (req, res) => {
                                 AND H_in.hotelID = R_in.hotelID
                                 AND B_in.roomNo = R_in.roomNo
                                 AND B_in.bookingDate = ${bookingDate}::DATE
-                    ) AS booked`
+                    ) as bookedRooms`
             )
                 .then(queryRes => {
                     
