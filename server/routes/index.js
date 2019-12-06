@@ -7,14 +7,13 @@ const router = express.Router();
 /* GET home page. */
 router.get('/read/:searchId', (req, res) => {
     const { searchId } = req.params;
-    const queryParams = req.query;
     switch (parseInt(searchId, 10)) {
         case 7: {
             // Get number of rooms available
             const { hotelID, bookingDate } = req.query;
             db.query(
                 `
-                    SELECT COUNT(*)
+                    SELECT COUNT(*) AS "available"
                     FROM (
                         SELECT R.roomNo
                         FROM Hotel H, Room R
@@ -31,7 +30,7 @@ router.get('/read/:searchId', (req, res) => {
                      ) AS available`
             )
                 .then(queryRes => {
-                    // Assuming we're sending the result
+                    
                     res.json({ data: queryRes.rows });
                 })
                 .catch(err => {
@@ -45,7 +44,7 @@ router.get('/read/:searchId', (req, res) => {
             const { hotelID, bookingDate } = req.body;
             db.query(
                 `
-                    SELECT COUNT(*)
+                    SELECT COUNT(*) AS "booked"
                     FROM (
                         SELECT R_in.roomNo
                         FROM Hotel H_in, Room R_in, Booking B_in
@@ -57,7 +56,7 @@ router.get('/read/:searchId', (req, res) => {
                     ) AS booked`
             )
                 .then(queryRes => {
-                    // Assuming we're sending the result
+                    
                     res.json({ data: queryRes.rows });
                 })
                 .catch(err => {
@@ -82,7 +81,6 @@ router.get('/read/:searchId', (req, res) => {
                             AND B.bookingDate <= ${bookingDate}::DATE + '7 day'::INTERVAL`
             )
                 .then(queryRes => {
-                    // Assuming we're sending the result
                     res.json({ data: queryRes.rows });
                 })
                 .catch(err => {
@@ -113,7 +111,7 @@ router.get('/read/:searchId', (req, res) => {
                     LIMIT ${outputLimit}`
             )
                 .then(queryRes => {
-                    // Assuming we're sending the result
+                    
                     res.json({ data: queryRes.rows });
                 })
                 .catch(err => {
@@ -127,7 +125,7 @@ router.get('/read/:searchId', (req, res) => {
             const { customerID, outputLimit } = req.query;
             db.query(
                 `
-                    SELECT R.roomNO, B.price
+                    SELECT R.roomNo, B.price
                     FROM Room R, Booking B, Customer C
                     WHERE C.customerID = ${customerID}
                             AND B.customer = C.customerID
@@ -137,7 +135,7 @@ router.get('/read/:searchId', (req, res) => {
                     LIMIT ${outputLimit}`
             )
                 .then(queryRes => {
-                    // Assuming we're sending the result
+                    
                     res.json({ data: queryRes.rows });
                 })
                 .catch(err => {
@@ -151,7 +149,7 @@ router.get('/read/:searchId', (req, res) => {
             const { customerID, searchStartDate, searchEndDate } = req.query;
             db.query(
                 `
-                    SELECT SUM(B.price)
+                    SELECT SUM(B.price) as "totalCost"
                     FROM Booking B, Customer C
                     WHERE C.customerID = ${customerID}
                             AND B.customer = C.customerID
@@ -160,7 +158,7 @@ router.get('/read/:searchId', (req, res) => {
 
             )
                 .then(queryRes => {
-                    // Assuming we're sending the result
+                    
                     res.json({ data: queryRes.rows });
                 })
                 .catch(err => {
@@ -180,7 +178,7 @@ router.get('/read/:searchId', (req, res) => {
                             AND M.cmpID = R.mCompany`
             )
                 .then(queryRes => {
-                    // Assuming we're sending the result
+                    
                     res.json({ data: queryRes.rows });
                 })
                 .catch(err => {
@@ -194,7 +192,7 @@ router.get('/read/:searchId', (req, res) => {
             const { outputLimit } = req.query;
             db.query(
                 `
-                    SELECT M.cmpID, M.name, COUNT(*) as "Number of Repairs"
+                    SELECT M.cmpID, M.name, COUNT(*) as "numRepairs"
                     FROM Repair R, MaintenanceCompany M
                     WHERE M.cmpID = R.mCompany
                     GROUP BY M.cmpID
@@ -202,7 +200,7 @@ router.get('/read/:searchId', (req, res) => {
                     LIMIT ${outputLimit}`
             )
                 .then(queryRes => {
-                    // Assuming we're sending the result
+                    
                     res.json({ data: queryRes.rows });
                 })
                 .catch(err => {
@@ -217,14 +215,14 @@ router.get('/read/:searchId', (req, res) => {
             const { hotelID, roomNo } = req.query;
             db.query(
                 `
-                    SELECT EXTRACT(YEAR FROM R.repairDate) AS "Year", COUNT(*) AS "Total Repairs"
+                    SELECT EXTRACT(YEAR FROM R.repairDate) AS "year", COUNT(*) AS "totalRepairs"
                     FROM Repair R
                     WHERE R.hotelID = ${hotelID}
                             AND R.roomNo = ${roomNo}
                     GROUP BY "Year"`
             )
                 .then(queryRes => {
-                    // Assuming we're sending the result
+                    
                     res.json({ data: queryRes.rows });
                 })
                 .catch(err => {
