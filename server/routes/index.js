@@ -164,7 +164,7 @@ router.get('/read/:searchId', (req, res) => {
             // List the repairs made by maintenance company
             const { cmpID } = req.query;
             db.query(`
-                    SELECT R.rID
+                    SELECT R.rID, R.hotelID, R.roomNo, R.repairDate, R.description, R.repairType
                     FROM Repair R, MaintenanceCompany M
                     WHERE M.cmpID = ${cmpID}
                             AND M.cmpID = R.mCompany`
