@@ -78,8 +78,8 @@ router.get('/read/:searchId', (req, res) => {
                             AND R.roomNo = B.roomNo
                             AND B.hotelID = H.hotelID
                             AND R.roomNo = ${roomNo}
-                            AND B.bookingDate > ${bookingDate}::DATE 
-                            AND B.bookingDate < ${bookingDate}::DATE + '7 day'::INTERVAL`
+                            AND B.bookingDate >= ${bookingDate}::DATE 
+                            AND B.bookingDate <= ${bookingDate}::DATE + '7 day'::INTERVAL`
             )
                 .then(queryRes => {
                     // Assuming we're sending the result
@@ -107,8 +107,8 @@ router.get('/read/:searchId', (req, res) => {
                             AND H.hotelID = B.hotelID
                             AND R.hotelID = H.hotelID
                             AND B.roomNo = R.roomNo
-                            AND B.bookingDate > ${searchStartDate}::DATE
-                            AND B.bookingDate < ${searchEndDate}::DATE
+                            AND B.bookingDate >= ${searchStartDate}::DATE
+                            AND B.bookingDate <= ${searchEndDate}::DATE
                     ORDER BY B.price DESC
                     LIMIT ${outputLimit}`
             )
@@ -149,13 +149,16 @@ router.get('/read/:searchId', (req, res) => {
         case 12: {
             // TODO: fix
             // Get customer total cost occurred for a give date range
-            const { customerID } = req.query;
+            const { customerID, searchStartDate, searchEndDate } = req.query;
             db.query(
                 `
                     SELECT SUM(B.price)
                     FROM Booking B, Customer C
                     WHERE C.customerID = ${customerID}
-                            AND B.customer = C.customerID`
+                            AND B.customer = C.customerID
+                            AND B.bookingDate >= ${searchStartDate}::DATE
+                            AND B.bookingDate <= ${searchEndDate}::DATE`
+
             )
                 .then(queryRes => {
                     // Assuming we're sending the result
