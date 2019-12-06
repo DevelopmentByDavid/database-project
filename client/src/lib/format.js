@@ -7,7 +7,7 @@ export function formatQuery(url, obj) {
             start = ''
         }
         // eslint-disable-next-line prefer-template
-        base = base + start + `${key}=${value}`
+        base = base + start + `${key}=%27${value}%27`
     });
     return base;
 }
