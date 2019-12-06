@@ -1,7 +1,7 @@
 import useFetch from './useFetch';
 
 export default function useGet(url, body) {
-    const [loading, data] useFetch(url, {
+    const [loading, data] = useFetch(url, {
         method: 'POST',
         body,
         headers: {
