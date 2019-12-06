@@ -5,14 +5,15 @@ import db from '../db';
 const router = express.Router();
 
 /* GET home page. */
-router.get('/search/:searchId', (req, res) => {
+router.get('/read/:searchId', (req, res) => {
     const { searchId } = req.params;
     const queryParams = req.query;
-    switch (searchId) {
+    switch (parseInt(searchId, 10)) {
         case 7: {
             // Get number of rooms available
-            const { hotelID, bookingDate} = req.query;
-            db.query(`
+            const { hotelID, bookingDate } = req.query;
+            db.query(
+                `
                     SELECT COUNT(*)
                     FROM (
                         SELECT R.roomNo
@@ -22,12 +23,13 @@ router.get('/search/:searchId', (req, res) => {
                         EXCEPT
                         SELECT R_in.roomNo
                         FROM Hotel H_in, Room R_in, Booking B_in
-                        WHERE H_in.hotelID = 1 /* given hotel ID */
+                        WHERE H_in.hotelID = ${hotelID}
                                   AND H_in.hotelID = B_in.hotelID
                                   AND H_in.hotelID = R_in.hotelID
                                   AND B_in.roomNo = R_in.roomNo
                                   AND B_in.bookingDate = ${bookingDate}::DATE
-                     ) AS available`)
+                     ) AS available`
+            )
                 .then(queryRes => {
                     // Assuming we're sending the result
                     res.json({ data: queryRes.rows });
@@ -41,7 +43,8 @@ router.get('/search/:searchId', (req, res) => {
         case 8: {
             // Get number of booked rooms
             const { hotelID, bookingDate } = req.body;
-            db.query(`
+            db.query(
+                `
                     SELECT COUNT(*)
                     FROM (
                         SELECT R_in.roomNo
@@ -51,7 +54,8 @@ router.get('/search/:searchId', (req, res) => {
                                 AND H_in.hotelID = R_in.hotelID
                                 AND B_in.roomNo = R_in.roomNo
                                 AND B_in.bookingDate = ${bookingDate}::DATE
-                    ) AS booked`)
+                    ) AS booked`
+            )
                 .then(queryRes => {
                     // Assuming we're sending the result
                     res.json({ data: queryRes.rows });
@@ -65,7 +69,8 @@ router.get('/search/:searchId', (req, res) => {
         case 9: {
             // Get hotel bookings for a week
             const { hotelID, roomNo, bookingDate } = req.query;
-            db.query(`
+            db.query(
+                `
                     SELECT B.bID
                     FROM Hotel H, Room R, Booking B
                     WHERE H.hotelID = ${hotelID}
@@ -74,7 +79,8 @@ router.get('/search/:searchId', (req, res) => {
                             AND B.hotelID = H.hotelID
                             AND R.roomNo = ${roomNo}
                             AND B.bookingDate > ${bookingDate}::DATE 
-                            AND B.bookingDate < ${bookingDate}::DATE + '7 day'::INTERVAL`)
+                            AND B.bookingDate < ${bookingDate}::DATE + '7 day'::INTERVAL`
+            )
                 .then(queryRes => {
                     // Assuming we're sending the result
                     res.json({ data: queryRes.rows });
@@ -87,8 +93,14 @@ router.get('/search/:searchId', (req, res) => {
         }
         case 10: {
             // Get top k rooms with highest price for a date range
-            const { hotelID, searchStartDate, searchEndDate, outputLimit } = req.query;
-            db.query(`
+            const {
+                hotelID,
+                searchStartDate,
+                searchEndDate,
+                outputLimit
+            } = req.query;
+            db.query(
+                `
                     SELECT R.roomNo, B.price
                     FROM Hotel H, Room R, Booking B
                     WHERE H.hotelID = ${hotelID} 
@@ -98,7 +110,8 @@ router.get('/search/:searchId', (req, res) => {
                             AND B.bookingDate > ${searchStartDate}::DATE
                             AND B.bookingDate < ${searchEndDate}::DATE
                     ORDER BY B.price DESC
-                    LIMIT ${outputLimit}`)
+                    LIMIT ${outputLimit}`
+            )
                 .then(queryRes => {
                     // Assuming we're sending the result
                     res.json({ data: queryRes.rows });
@@ -112,7 +125,8 @@ router.get('/search/:searchId', (req, res) => {
         case 11: {
             // Get top k highest booking price for a customer
             const { customerID, outputLimit } = req.query;
-            db.query(`
+            db.query(
+                `
                     SELECT R.roomNO, B.price
                     FROM Room R, Booking B, Customer C
                     WHERE C.customerID = ${customerID}
@@ -120,7 +134,8 @@ router.get('/search/:searchId', (req, res) => {
                             AND B.hotelID = R.hotelID
                             AND B.roomNo = R.roomNo
                     ORDER BY B.price DESC
-                    LIMIT ${outputLimit}`)
+                    LIMIT ${outputLimit}`
+            )
                 .then(queryRes => {
                     // Assuming we're sending the result
                     res.json({ data: queryRes.rows });
@@ -132,13 +147,16 @@ router.get('/search/:searchId', (req, res) => {
             break;
         }
         case 12: {
+            // TODO: fix
             // Get customer total cost occurred for a give date range
             const { customerID } = req.query;
-            db.query(`
+            db.query(
+                `
                     SELECT SUM(B.price)
                     FROM Booking B, Customer C
                     WHERE C.customerID = ${customerID}
-                            AND B.customer = C.customerID`)
+                            AND B.customer = C.customerID`
+            )
                 .then(queryRes => {
                     // Assuming we're sending the result
                     res.json({ data: queryRes.rows });
@@ -152,11 +170,13 @@ router.get('/search/:searchId', (req, res) => {
         case 13: {
             // List the repairs made by maintenance company
             const { cmpID } = req.query;
-            db.query(`
+            db.query(
+                `
                     SELECT R.rID
                     FROM Repair R, MaintenanceCompany M
                     WHERE M.cmpID = ${cmpID}
-                            AND M.cmpID = R.mCompany`)
+                            AND M.cmpID = R.mCompany`
+            )
                 .then(queryRes => {
                     // Assuming we're sending the result
                     res.json({ data: queryRes.rows });
@@ -170,13 +190,15 @@ router.get('/search/:searchId', (req, res) => {
         case 14: {
             // Get top k maintenance companies based on repair count
             const { outputLimit } = req.query;
-            db.query(`
+            db.query(
+                `
                     SELECT M.cmpID, M.name, COUNT(*) as "Number of Repairs"
                     FROM Repair R, MaintenanceCompany M
                     WHERE M.cmpID = R.mCompany
                     GROUP BY M.cmpID
                     ORDER BY "Number of Repairs" DESC
-                    LIMIT ${outputLimit}`)
+                    LIMIT ${outputLimit}`
+            )
                 .then(queryRes => {
                     // Assuming we're sending the result
                     res.json({ data: queryRes.rows });
@@ -191,12 +213,14 @@ router.get('/search/:searchId', (req, res) => {
             // Get number of repairs occurred per year for a given hotel room
             console.log('todo');
             const { hotelID, roomNo } = req.query;
-            db.query(`
+            db.query(
+                `
                     SELECT EXTRACT(YEAR FROM R.repairDate) AS "Year", COUNT(*) AS "Total Repairs"
                     FROM Repair R
                     WHERE R.hotelID = ${hotelID}
                             AND R.roomNo = ${roomNo}
-                    GROUP BY "Year"`)
+                    GROUP BY "Year"`
+            )
                 .then(queryRes => {
                     // Assuming we're sending the result
                     res.json({ data: queryRes.rows });
@@ -214,7 +238,7 @@ router.get('/search/:searchId', (req, res) => {
 });
 
 // We need to make sure we do validation. E.g. does the room we're trying to book exist?
-router.post('/insert/:insertId', (req, res) => {
+router.post('/create/:insertId', (req, res) => {
     const { insertId } = req.params;
     const data = req.body;
     switch (insertId) {
