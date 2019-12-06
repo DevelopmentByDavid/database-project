@@ -25,7 +25,7 @@ export default function FormBooking() {
         console.log(values);
         console.log('TODO');
     };
-    const [loading, data] = useGet(`/read/12?outputLimit=${outputLimit}`);
+    // const [loading, data] = useGet(`/read/12?outputLimit=${outputLimit}`);
     return (
         <Paper style={{ padding: '16px' }}>
             <Typography variant='h4'>Top Repairs Made By Maintenance Companies</Typography>

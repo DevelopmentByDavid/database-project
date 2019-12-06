@@ -4,6 +4,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import Dialog from './Dialog';
+// import { formatQuery } from '../lib/format';
 
 const fields = ['fName', 'lName', 'Address', 'phNo', 'DOB', 'gender'];
 const labels = [
@@ -16,6 +18,7 @@ const labels = [
 ];
 
 export default function FormCustomer() {
+    const [data, setData] = React.useState(null);
     const handleSubmit = event => {
         event.preventDefault();
         const { fName, lName, Address, phNo, DOB, gender } = event.target;
@@ -27,8 +30,23 @@ export default function FormCustomer() {
             DOB: DOB.value,
             gender: gender.value
         };
-        console.log(values);
-        console.log('TODO');
+        fetch('/create/0', {
+            method: 'POST',
+            body: JSON.stringify(values),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(res => {
+                res.json().then(jsonRes => {
+                    console.log(jsonRes);
+                    // setData(resData);
+                    // console.log(resData);
+                });
+            })
+            .catch(err => {
+                console.log(err);
+            });
     };
     return (
         <Paper style={{ padding: '16px' }}>

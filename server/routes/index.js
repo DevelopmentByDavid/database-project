@@ -11,22 +11,21 @@ router.get('/read/:searchId', (req, res) => {
         case 7: {
             // Get number of rooms available
             const { hotelID, bookingDate } = req.query;
-            db.query(
-                `
+            db.query(`
                     SELECT COUNT(*) AS "available"
                     FROM (
                         SELECT R.roomNo
                         FROM Hotel H, Room R
-                        WHERE H.hotelID = ${hotelID}
+                        WHERE H.hotelID = '${hotelID}'
                                   AND H.hotelID = R.hotelID
                         EXCEPT
                         SELECT R_in.roomNo
                         FROM Hotel H_in, Room R_in, Booking B_in
-                        WHERE H_in.hotelID = ${hotelID}
+                        WHERE H_in.hotelID = '${hotelID}'
                                   AND H_in.hotelID = B_in.hotelID
                                   AND H_in.hotelID = R_in.hotelID
                                   AND B_in.roomNo = R_in.roomNo
-                                  AND B_in.bookingDate = ${bookingDate}::DATE
+                                  AND B_in.bookingDate = '${bookingDate}'::DATE
                      ) AS available`
             )
                 .then(queryRes => {
@@ -42,8 +41,7 @@ router.get('/read/:searchId', (req, res) => {
         case 8: {
             // Get number of booked rooms
             const { hotelID, bookingDate } = req.body;
-            db.query(
-                `
+            db.query(`
                     SELECT COUNT(*) AS "booked"
                     FROM (
                         SELECT R_in.roomNo
@@ -68,8 +66,7 @@ router.get('/read/:searchId', (req, res) => {
         case 9: {
             // Get hotel bookings for a week
             const { hotelID, roomNo, bookingDate } = req.query;
-            db.query(
-                `
+            db.query(`
                     SELECT B.bID
                     FROM Hotel H, Room R, Booking B
                     WHERE H.hotelID = ${hotelID}
@@ -97,8 +94,7 @@ router.get('/read/:searchId', (req, res) => {
                 searchEndDate,
                 outputLimit
             } = req.query;
-            db.query(
-                `
+            db.query(`
                     SELECT R.roomNo, B.price
                     FROM Hotel H, Room R, Booking B
                     WHERE H.hotelID = ${hotelID} 
@@ -123,8 +119,7 @@ router.get('/read/:searchId', (req, res) => {
         case 11: {
             // Get top k highest booking price for a customer
             const { customerID, outputLimit } = req.query;
-            db.query(
-                `
+            db.query(`
                     SELECT R.roomNo, B.price
                     FROM Room R, Booking B, Customer C
                     WHERE C.customerID = ${customerID}
@@ -147,15 +142,13 @@ router.get('/read/:searchId', (req, res) => {
         case 12: {
             // Get customer total cost occurred for a give date range
             const { customerID, searchStartDate, searchEndDate } = req.query;
-            db.query(
-                `
+            db.query(`
                     SELECT SUM(B.price) as "totalCost"
                     FROM Booking B, Customer C
                     WHERE C.customerID = ${customerID}
                             AND B.customer = C.customerID
                             AND B.bookingDate >= ${searchStartDate}::DATE
                             AND B.bookingDate <= ${searchEndDate}::DATE`
-
             )
                 .then(queryRes => {
                     
@@ -170,8 +163,7 @@ router.get('/read/:searchId', (req, res) => {
         case 13: {
             // List the repairs made by maintenance company
             const { cmpID } = req.query;
-            db.query(
-                `
+            db.query(`
                     SELECT R.rID
                     FROM Repair R, MaintenanceCompany M
                     WHERE M.cmpID = ${cmpID}
@@ -190,13 +182,12 @@ router.get('/read/:searchId', (req, res) => {
         case 14: {
             // Get top k maintenance companies based on repair count
             const { outputLimit } = req.query;
-            db.query(
-                `
+            db.query(`
                     SELECT M.cmpID, M.name, COUNT(*) as "numRepairs"
                     FROM Repair R, MaintenanceCompany M
                     WHERE M.cmpID = R.mCompany
                     GROUP BY M.cmpID
-                    ORDER BY "Number of Repairs" DESC
+                    ORDER BY "numRepairs" DESC
                     LIMIT ${outputLimit}`
             )
                 .then(queryRes => {
@@ -213,13 +204,12 @@ router.get('/read/:searchId', (req, res) => {
             // Get number of repairs occurred per year for a given hotel room
             console.log('todo');
             const { hotelID, roomNo } = req.query;
-            db.query(
-                `
+            db.query(`
                     SELECT EXTRACT(YEAR FROM R.repairDate) AS "year", COUNT(*) AS "totalRepairs"
                     FROM Repair R
                     WHERE R.hotelID = ${hotelID}
                             AND R.roomNo = ${roomNo}
-                    GROUP BY "Year"`
+                    GROUP BY "year"`
             )
                 .then(queryRes => {
                     
@@ -241,16 +231,19 @@ router.get('/read/:searchId', (req, res) => {
 router.post('/create/:insertId', (req, res) => {
     const { insertId } = req.params;
     const data = req.body;
-    switch (insertId) {
+    switch (parseInt(insertId, 10)) {
         case 0: {
             const { fName, lName, Address, phNo, DOB, gender } = data;
             db.query(
-                `INSERT INTO customer(fName, lName,\
+                `INSERT INTO customer(customerID, fName, lName,\
                  Address, phNo, DOB, gender) VALUES\
-                  (${fName}, ${lName}, ${Address}, ${phNo}, ${DOB}, ${gender})`
+                  (${2000 +
+                      Math.floor(
+                          Math.random() * 1000000000000
+                      )},'${fName}', '${lName}', '${Address}', '${phNo}'::NUMERIC, '${DOB}'::DATE, '${gender}')`
             )
                 .then(queryRes => {
-                    res.json(queryRes.rows);
+                    res.json({ data:queryRes.rowCount });
                 })
                 .catch(err => {
                     console.log(err);
