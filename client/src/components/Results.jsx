@@ -7,10 +7,10 @@ import Typography from '@material-ui/core/Typography';
 
 export default function Results({ data, onClick }) {
     return data.length === 0 ? (
-        <Typography variant='h4'>
+        <Typography align='center' variant='h4'>
             No Results to Display!
         </Typography>
-    ):(
+    ) : (
         <List>
             {data.map(({ _id, primary, secondary }) => (
                 <ListItem button divider key={_id} onClick={() => onClick(_id)}>

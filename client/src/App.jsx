@@ -3,7 +3,8 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { BrowserRouter, Route } from 'react-router-dom';
 import MainMenu from './pages/MainMenu';
 import Layout from './layout';
-import Search from './pages/Search';
+import Read from './pages/Read';
+import Create from './pages/Create';
 
 function App() {
     return (
@@ -11,7 +12,8 @@ function App() {
             <CssBaseline />
             <Route path='/' component={Layout} />
             <Route exact path='/' component={MainMenu} />
-            <Route path='/search/:id' component={Search} />
+            <Route path='/read/:id' component={Read} />
+            <Route path='/create/:id' component={Create} />
         </BrowserRouter>
     );
 }

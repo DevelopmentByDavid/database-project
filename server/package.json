@@ -6,7 +6,7 @@
     "start": "nodemon  --exec babel-node ./bin/www.js",
     "startdb": "./db/startPostgreSQL.sh",
     "stopdb": "./db/stopPostgreDB.sh",
-    "seed": "cp -R ./db/data/* /tmp/project/myDB/data && psql -h localhost -p $PGPORT \"project_DB\" < ./db/create.sql"
+    "seed": "cp -R ./db/data/* /tmp/project/myDB/data && psql -h localhost -p 8192 \"project_DB\" < ./db/create.sql"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
