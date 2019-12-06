@@ -59,8 +59,8 @@ export default function FullScreenDialog({ data, open, handleClose }) {
                 </Toolbar>
             </AppBar>
             <List>
-                {data.map(row => (
-                    <ListItem id={JSON.stringify(row)} button>
+                {data.map((row, idx) => (
+                    <ListItem key={idx} id={JSON.stringify(row)} button>
                         <ListItemText
                             primary={JSON.stringify(row)}
                             // secondary='Titania'
