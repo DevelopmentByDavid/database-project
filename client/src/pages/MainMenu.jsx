@@ -50,11 +50,15 @@ const menu = [
 export default function MainMenu() {
     const history = useHistory();
     const handleClick = id => {
-        console.log(id);
-        history.push(`/search/${id}`)
+        // < 7 is a create, >= 7 is a query
+        if (id < 7) {
+            history.push(`/create/${id}`);
+        } else {
+            history.push(`/read/${id}`);
+        }
     };
     return (
-        <Container maxWidth='md' style={{ paddingtop: '16px'}}>
+        <Container maxWidth='md' style={{ paddingtop: '16px' }}>
             <Typography variant='h4'>Menu</Typography>
             <Paper>
                 <Menu data={menu} onClick={handleClick} />
