@@ -56,14 +56,18 @@ export default function FullScreenDialog({ data, open, handleClose }) {
                 </Toolbar>
             </AppBar>
             <List>
-                {data.map((row, idx) => (
-                    <ListItem key={idx} id={JSON.stringify(row)} button>
-                        <ListItemText
-                            primary={JSON.stringify(row)}
-                            // secondary='Titania'
-                        />
-                    </ListItem>
-                ))}
+                {data.length > 0 ? (
+                    data.map((row, idx) => (
+                        <ListItem key={idx} id={JSON.stringify(row)} button>
+                            <ListItemText
+                                primary={JSON.stringify(row)}
+                                // secondary='Titania'
+                            />
+                        </ListItem>
+                    ))
+                ) : (
+                    <h1> No Results to Display </h1>
+                )}
             </List>
         </Dialog>
     );
