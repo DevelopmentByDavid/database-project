@@ -48,7 +48,6 @@ export default function FormRepair() {
         console.log(values);
         console.log('TODO');
     };
-    // We need to use a query to get repairIDs from requests which have not been repaired
     return (
         <Paper style={{ padding: '16px' }}>
             <Typography variant='h4'>Add a Repair</Typography>
