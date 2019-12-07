@@ -65,12 +65,13 @@ router.get('/fields/:table', (req, res) => {
         }
 
         case 'staff': {
-            const { hotelID } = req.query;
+            const { hotelID, staffRole } = req.query;
             db.query(`
                     SELECT S.ssn
                     FROM Staff S, Hotel H
                     WHERE H.hotelID = ${hotelID}
-                            AND H.hotelID = S.employerID`
+                            AND H.hotelID = S.employerID
+                            AND S.role = ${staffRole}`
             )
                 .then(queryRes => {
 
