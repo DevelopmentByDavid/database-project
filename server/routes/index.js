@@ -4,6 +4,10 @@ import db from '../db';
 
 const router = express.Router();
 
+function yieldID(start) {
+    return start + Math.floor(Math.random() * 10000000000000);
+}
+
 /* GET home page. */
 router.get('/read/:searchId', (req, res) => {
     const { searchId } = req.params;
@@ -237,10 +241,7 @@ router.post('/create/:insertId', (req, res) => {
             db.query(
                 `INSERT INTO customer(customerID, fName, lName,\
                  Address, phNo, DOB, gender) VALUES\
-                  (${2000 +
-                      Math.floor(
-                          Math.random() * 1000000000000
-                      )},'${fName}', '${lName}', '${Address}', '${phNo}'::NUMERIC, '${DOB}'::DATE, '${gender}')`
+                  (${yieldID(1001)},'${fName}', '${lName}', '${Address}', '${phNo}'::NUMERIC, '${DOB}'::DATE, '${gender}')`
             )
                 .then(queryRes => {
                     res.json({ data:queryRes.rowCount });
@@ -252,27 +253,93 @@ router.post('/create/:insertId', (req, res) => {
             break;
         }
         case 1: {
-            console.log('todo');
+            const { hotelID, roomNo, roomType } = data;
+            db.query(`
+                    INSERT INTO Room(hotelID, roomNo, roomType)
+                    VALUES ('${hotelID}', '${roomNo}', '${roomType}')`
+            )
+                .then(queryRes => {
+                    res.json({ data:queryRes.rowCount });
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.json(err);
+                });
             break;
         }
         case 2: {
-            console.log('todo');
+            const { name, address, isCertified } = data;
+            db.query(`
+                    INSERT INTO MaintenanceCompany(cmpID, name, address, isCertified)
+                    VALUES ('${yieldID(21)}', '${name}', '${address}', '${isCertified}')`
+            )
+                .then(queryRes => {
+                    res.json({ data:queryRes.rowCount });
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.json(err);
+                });
             break;
         }
         case 3: {
-            console.log('todo');
+            const { rID, hotelID, roomNo, mCompany, repairDate, description, repairType } = data;
+            db.query(`
+                    INSERT INTO Repair(rId, hotelID, roomNo, mCompany, repairDate, description, repairType)
+                    VALUES ('${rID}', '${hotelID}', '${roomNo}', '${mCompany}', '${repairDate}', '${description}', '${repairType}')`
+            )
+                .then(queryRes => {
+                    res.json({ data:queryRes.rowCount });
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.json(err);
+                });
             break;
         }
         case 4: {
-            console.log('todo');
+            const { customer, hotelID, roomNo, bookingDate, noOfPeople } = data;
+            db.query(`
+                    INSERT INTO Booking(bID, customer, hotelID, roomNo, bookingDate, noOfPeople)
+                    VALUE ('${yieldID(4001)}', '${customer}', '${hotelID}', '${roomNo}', '${bookingDate}', '${noOfPeople}')`
+            )
+                .then(queryRes => {
+                    res.json({ data:queryRes.rowCount });
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.json(err);
+                });
             break;
         }
         case 5: {
-            console.log('todo');
+            const { staffID, hotelID, roomNo } = data;
+            db.query(`
+                    INSERT INTO Assigned(asgID, staffID, hotelID, roomNo)
+                    VALUES ('${yieldID(2001)}', '${staffID}', '${hotelID}', '${roomNo}')`
+            )
+                .then(queryRes => {
+                    res.json({ data:queryRes.rowCount });
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.json(err);
+                });
             break;
         }
         case 6: {
-            console.log('todo');
+            const { managerID, repairID, requestDate, description } = data;
+            db.query(`
+                    INSERT INTO Request(reqID, managerID, repairID, requestDate, description)
+                    VALUES ('${yieldID(2001)}', '${managerID}', '${repairID}', '${requestDate}', '${description}')`
+            )
+                .then(queryRes => {
+                    res.json({ data:queryRes.rowCount });
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.json(err);
+                });
             break;
         }
         default: {
