@@ -3,22 +3,25 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
+import CompanySelect from './Fields/CompanySelect';
 import Dialog from './Dialog';
-import {formatQuery} from '../lib/format';
+import { formatQuery } from '../lib/format';
 
-const fields = ['cmpID'];
-const labels = ['Company ID'];
+// const fields = ['cmpID'];
+// const labels = ['Company ID'];
 
 export default function FormCompany() {
+    const [state, setState] = React.useState({
+        cmpID: ''
+    });
     const [data, setData] = React.useState(null);
     const handleSubmit = event => {
         event.preventDefault();
-        const { cmpID } = event.target;
-        const values = {
-            cmpID: cmpID.value,
-        };
-        const url = formatQuery('/read/13', values);
+        // const { cmpID } = event.target;
+        // const values = {
+        //     cmpID: cmpID.value,
+        // };
+        const url = formatQuery('/read/13', state);
         fetch(url, {
             method: 'GET',
             headers: {
@@ -39,19 +42,22 @@ export default function FormCompany() {
     return (
         <>
             <Paper style={{ padding: '16px' }}>
-                <Typography variant='h4'>Repairs By Maintenance Company</Typography>
+                <Typography variant='h4'>
+                    Repairs By Maintenance Company
+                </Typography>
                 <form id='new-customer' onSubmit={handleSubmit}>
                     <Grid container spacing={2}>
-                        {fields.map((fieldName, idx) => (
-                            <Grid item xs={12} key={fieldName}>
-                                <TextField
-                                    // key={fieldName}
-                                    id={fieldName}
-                                    label={labels[idx]}
-                                    fullWidth
-                                />
-                            </Grid>
-                        ))}
+                        <Grid item xs={12}>
+                            <CompanySelect
+                                value={state.cmpID}
+                                onChange={e =>
+                                    setState({
+                                        ...state,
+                                        cmpID: e.target.value
+                                    })
+                                }
+                            />
+                        </Grid>
                         <Grid container item xs={12} justify='flex-end'>
                             <Button
                                 variant='contained'
@@ -64,7 +70,11 @@ export default function FormCompany() {
                     </Grid>
                 </form>
             </Paper>
-            <Dialog data={data || []} open={Boolean(data)} handleClose={() => setData(null)} />
+            <Dialog
+                data={data || []}
+                open={Boolean(data)}
+                handleClose={() => setData(null)}
+            />
         </>
     );
 }

@@ -11,7 +11,7 @@ import List from '@material-ui/core/List';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
-// import Typography from '@material-ui/core/Typography';
+import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 
@@ -41,11 +41,7 @@ export default function FullScreenDialog({ data, open, handleClose }) {
     // };
 
     return (
-        <Dialog
-            fullScreen
-            open={open}
-            TransitionComponent={Transition}
-        >
+        <Dialog fullScreen open={open} TransitionComponent={Transition}>
             <AppBar className={classes.appBar}>
                 <Toolbar>
                     <IconButton
@@ -56,6 +52,7 @@ export default function FullScreenDialog({ data, open, handleClose }) {
                     >
                         <CloseIcon />
                     </IconButton>
+                    <Typography variant='h6'>Results</Typography>
                 </Toolbar>
             </AppBar>
             <List>
@@ -74,7 +71,7 @@ export default function FullScreenDialog({ data, open, handleClose }) {
 
 FullScreenDialog.defaultProps = {
     data: []
-}
+};
 
 FullScreenDialog.propTypes = {
     data: PropTypes.array,

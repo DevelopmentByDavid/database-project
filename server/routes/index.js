@@ -303,10 +303,11 @@ router.post('/create/:insertId', (req, res) => {
         }
         // Add a new booking
         case 4: {
-            const { customer, hotelID, roomNo, bookingDate, noOfPeople } = data;
+            const { customer, hotelID, roomNo, bookingDate, noOfPeople, price } = data;
+            console.log(data);
             db.query(`
-                    INSERT INTO Booking(bID, customer, hotelID, roomNo, bookingDate, noOfPeople)
-                    VALUE ('${yieldID(4001)}', '${customer}', '${hotelID}', '${roomNo}', '${bookingDate}', '${noOfPeople}')`
+                    INSERT INTO Booking(bID, customer, hotelID, roomNo, bookingDate, noOfPeople, price)
+                    VALUE ('${yieldID(4001)}', '${customer}', '${hotelID}', '${roomNo}', '${bookingDate}', '${noOfPeople},'${price}'')`
             )
                 .then(queryRes => {
                     res.json({ data:queryRes.rowCount });

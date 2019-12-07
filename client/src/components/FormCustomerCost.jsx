@@ -1,26 +1,33 @@
+/* eslint-disable react/jsx-curly-newline */
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Dialog from './Dialog';
-import {formatQuery} from '../lib/format';
+import CustomerSelect from './Fields/CustomerSelect';
+import DatePicker from './FieldDatePicker';
+import { formatQuery } from '../lib/format';
 
-const fields = ['customerID', 'searchStartDate', 'searchEndDate'];
-const labels = ['Customer ID', 'Start Date', 'End Date'];
+// const fields = ['customerID', 'searchStartDate', 'searchEndDate'];
+// const labels = ['Customer ID', 'Start Date', 'End Date'];
 
 export default function FormCustomerCost() {
+    const [state, setState] = React.useState({
+        customerID: '',
+        searchStartDate: '',
+        searchEndDate: ''
+    });
     const [data, setData] = React.useState(null);
     const handleSubmit = event => {
         event.preventDefault();
-        const { customerID, searchStartDate, searchEndDate } = event.target;
-        const values = {
-            customerID: customerID.value,
-            searchStartDate: searchStartDate.value,
-            searchEndDate: searchEndDate.value
-        };
-        const url = formatQuery('/read/12', values);
+        // const { customerID, searchStartDate, searchEndDate } = event.target;
+        // const values = {
+        //     customerID: customerID.value,
+        //     searchStartDate: searchStartDate.value,
+        //     searchEndDate: searchEndDate.value
+        // };
+        const url = formatQuery('/read/12', state);
         fetch(url, {
             method: 'GET',
             headers: {
@@ -38,22 +45,51 @@ export default function FormCustomerCost() {
                 console.log(err);
             });
     };
+    const handleChange = (key, e) => {
+        setState({ ...state, [key]: e.target.value });
+    };
     return (
         <>
             <Paper style={{ padding: '16px' }}>
-                <Typography variant='h4'>Total Cost Incurred For Customer</Typography>
+                <Typography variant='h4'>
+                    Total Cost Incurred For Customer
+                </Typography>
                 <form id='new-customer' onSubmit={handleSubmit}>
                     <Grid container spacing={2}>
-                        {fields.map((fieldName, idx) => (
-                            <Grid item xs={12} key={fieldName}>
-                                <TextField
-                                    // key={fieldName}
-                                    id={fieldName}
-                                    label={labels[idx]}
-                                    fullWidth
-                                />
-                            </Grid>
-                        ))}
+                        <Grid item xs={12}>
+                            <CustomerSelect
+                                value={state.customer}
+                                onChange={e => handleChange('customerID', e)}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <DatePicker
+                                id='searchStartDate'
+                                label='Start Date'
+                                value={state.searchStartDate}
+                                onChange={e =>
+                                    setState({
+                                        ...state,
+                                        searchStartDate: e.target.value
+                                    })
+                                }
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <DatePicker
+                                id='searchEndDate'
+                                label='End Date'
+                                value={state.searchEndDate}
+                                onChange={e =>
+                                    setState({
+                                        ...state,
+                                        searchEndDate: e.target.value
+                                    })
+                                }
+                                fullWidth
+                            />
+                        </Grid>
                         <Grid container item xs={12} justify='flex-end'>
                             <Button
                                 variant='contained'
@@ -66,7 +102,11 @@ export default function FormCustomerCost() {
                     </Grid>
                 </form>
             </Paper>
-            <Dialog data={data || []} open={Boolean(data)} handleClose={() => setData(null)} />
+            <Dialog
+                data={data || []}
+                open={Boolean(data)}
+                handleClose={() => setData(null)}
+            />
         </>
     );
 }

@@ -1,25 +1,31 @@
+/* eslint-disable react/jsx-curly-newline */
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Dialog from './Dialog';
+import HotelSelect from './Fields/HotelSelect';
+import DatePicker from './FieldDatePicker';
 import { formatQuery } from '../lib/format';
 
-const fields = ['hotelID', 'bookingDate'];
-const labels = ['Hotel ID', 'Booking Date'];
+// const fields = ['hotelID', 'bookingDate'];
+// const labels = ['Hotel ID', 'Booking Date'];
 
 export default function FormRoomsAvailable() {
+    const [state, setState] = React.useState({
+        hotelID: '',
+        bookingDate: ''
+    });
     const [data, setData] = React.useState(null);
     const handleSubmit = event => {
         event.preventDefault();
-        const { hotelID, bookingDate } = event.target;
-        const values = {
-            hotelID: hotelID.value,
-            bookingDate: bookingDate.value
-        };
-        const url = formatQuery('/read/7', values);
+        // const { hotelID, bookingDate } = event.target;
+        // const values = {
+        //     hotelID: hotelID.value,
+        //     bookingDate: bookingDate.value
+        // };
+        const url = formatQuery('/read/7', state);
         fetch(url, {
             method: 'GET',
             headers: {
@@ -43,16 +49,31 @@ export default function FormRoomsAvailable() {
                 <Typography variant='h4'>Number of Rooms Available</Typography>
                 <form id='new-customer' onSubmit={handleSubmit}>
                     <Grid container spacing={2}>
-                        {fields.map((fieldName, idx) => (
-                            <Grid item xs={12} key={fieldName}>
-                                <TextField
-                                    // key={fieldName}
-                                    id={fieldName}
-                                    label={labels[idx]}
-                                    fullWidth
-                                />
-                            </Grid>
-                        ))}
+                        <Grid item xs={12}>
+                            <HotelSelect
+                                value={state.hotelID}
+                                onChange={e =>
+                                    setState({
+                                        ...state,
+                                        hotelID: e.target.value
+                                    })
+                                }
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <DatePicker
+                                id='date-of-booking'
+                                label='Booking Date'
+                                value={state.bookingDate}
+                                onChange={e =>
+                                    setState({
+                                        ...state,
+                                        bookingDate: e.target.value
+                                    })
+                                }
+                                fullWidth
+                            />
+                        </Grid>
                         <Grid container item xs={12} justify='flex-end'>
                             <Button
                                 variant='contained'
@@ -65,7 +86,11 @@ export default function FormRoomsAvailable() {
                     </Grid>
                 </form>
             </Paper>
-            <Dialog data={data || []} open={Boolean(data)} handleClose={() => setData(null)} />
+            <Dialog
+                data={data || []}
+                open={Boolean(data)}
+                handleClose={() => setData(null)}
+            />
         </>
     );
 }

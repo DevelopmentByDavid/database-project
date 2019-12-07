@@ -55,6 +55,7 @@ export default function FormBooking() {
                                     id={fieldName}
                                     label={labels[idx]}
                                     fullWidth
+                                    type='number'
                                 />
                             </Grid>
                         ))}

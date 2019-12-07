@@ -58,7 +58,7 @@ export default function MainMenu() {
         }
     };
     return (
-        <Container maxWidth='md' style={{ paddingtop: '16px' }}>
+        <Container maxWidth='md' style={{ paddingTop: '16px' }}>
             <Typography variant='h4'>Menu</Typography>
             <Paper>
                 <Menu data={menu} onClick={handleClick} />
