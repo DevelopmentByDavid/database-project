@@ -12,6 +12,7 @@ export default function FormRoom() {
     const handleSubmit = event => {
         event.preventDefault();
         const { hotelID, roomNo, roomType } = event.target;
+        // TODO: validate roomNo has not already been used
         const values = {
             roomType: roomType.value,
             hotelID: hotelID.value,
