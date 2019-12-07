@@ -237,6 +237,7 @@ router.post('/create/:insertId', (req, res) => {
     const data = req.body;
     switch (parseInt(insertId, 10)) {
         case 0: {
+            // Add a new customer
             const { fName, lName, Address, phNo, DOB, gender } = data;
             db.query(
                 `INSERT INTO customer(customerID, fName, lName,\
@@ -253,6 +254,7 @@ router.post('/create/:insertId', (req, res) => {
             break;
         }
         case 1: {
+            // Add a new room
             const { hotelID, roomNo, roomType } = data;
             db.query(`
                     INSERT INTO Room(hotelID, roomNo, roomType)
@@ -268,6 +270,7 @@ router.post('/create/:insertId', (req, res) => {
             break;
         }
         case 2: {
+            // Add a new maintanance company
             const { name, address, isCertified } = data;
             db.query(`
                     INSERT INTO MaintenanceCompany(cmpID, name, address, isCertified)
@@ -283,6 +286,7 @@ router.post('/create/:insertId', (req, res) => {
             break;
         }
         case 3: {
+            // Add a new repair
             const { rID, hotelID, roomNo, mCompany, repairDate, description, repairType } = data;
             db.query(`
                     INSERT INTO Repair(rId, hotelID, roomNo, mCompany, repairDate, description, repairType)
@@ -297,6 +301,7 @@ router.post('/create/:insertId', (req, res) => {
                 });
             break;
         }
+        // Add a new booking
         case 4: {
             const { customer, hotelID, roomNo, bookingDate, noOfPeople } = data;
             db.query(`
@@ -313,6 +318,7 @@ router.post('/create/:insertId', (req, res) => {
             break;
         }
         case 5: {
+            // Assign a house cleaning staff to a room
             const { staffID, hotelID, roomNo } = data;
             db.query(`
                     INSERT INTO Assigned(asgID, staffID, hotelID, roomNo)
@@ -328,6 +334,7 @@ router.post('/create/:insertId', (req, res) => {
             break;
         }
         case 6: {
+            // Raise a repair request
             const { managerID, repairID, requestDate, description } = data;
             db.query(`
                     INSERT INTO Request(reqID, managerID, repairID, requestDate, description)
